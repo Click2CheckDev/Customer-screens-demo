@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "./static/css/main.23204a0c.css",
+    "main.js": "./static/js/main.40b5b2a0.js",
+    "static/js/206.c0346f44.chunk.js": "./static/js/206.c0346f44.chunk.js",
+    "static/media/idv8.png": "./static/media/idv8.e590816c4eb7469e1509.png",
+    "static/media/idv7.png": "./static/media/idv7.77a59cd1d5b7f577127a.png",
+    "static/media/bankAuth.png": "./static/media/bankAuth.394fc24a5b9a6c2b9a19.png",
+    "static/media/idv10.png": "./static/media/idv10.e977ad858b2b6f5c617b.png",
+    "static/media/bankIDcheck.png": "./static/media/bankIDcheck.2116460e5ca19e311831.png",
+    "static/media/accountScoreID.png": "./static/media/accountScoreID.da168b6ed2223e4c169c.png",
+    "static/media/idv2.png": "./static/media/idv2.c8066867b1cbcd5e26c1.png",
+    "static/media/idv3.png": "./static/media/idv3.53dd826f6043dfd175cc.png",
+    "static/media/selectBankAccountScore.png": "./static/media/selectBankAccountScore.4bef8ad66a50e8c33b82.png",
+    "static/media/idv5.png": "./static/media/idv5.d7e50f1a735c4a2f4bc9.png",
+    "static/media/idv1.png": "./static/media/idv1.3bc29c05677aee18e72a.png",
+    "static/media/AccountScoreBankDone.png": "./static/media/AccountScoreBankDone.da1b14f632153779cce4.png",
+    "static/media/idv4.png": "./static/media/idv4.d02da13b455539b772f1.png",
+    "static/media/idv9.png": "./static/media/idv9.cf5d2c202d6440eac9f1.png",
+    "static/media/accountScoreIDCheckDone.png": "./static/media/accountScoreIDCheckDone.c730abc52a174ce2f999.png",
+    "static/media/idv6.png": "./static/media/idv6.37697a4a67260c88dde5.png",
+    "static/media/idv12.png": "./static/media/idv12.c54f54d565136e372e2c.png",
+    "static/media/idv11.png": "./static/media/idv11.01ab9af8dce2aee93742.png",
+    "static/media/companyLogo.png": "./static/media/companyLogo.d7aa1c517c459d21c7d2.png",
+    "index.html": "./index.html"
+  },
+  "entrypoints": [
+    "static/css/main.23204a0c.css",
+    "static/js/main.40b5b2a0.js"
+  ]
+}

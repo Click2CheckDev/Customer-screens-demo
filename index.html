@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Customer Screens Side by Side</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500&display=swap">
+<style>
+/* Layout: a control bar, then today's version and the update: two phones side by side, or two browser windows. */
+:root {
+  --page: #efedf0;
+  --surface: #ffffff;
+  --ink: #1d1d22;
+  --text: #45454d;
+  --muted: #74737c;
+  --line: #dfdade;
+  --accent: #e61758;
+  --accent-ink: #ffffff;
+  --accent-soft: #fde8ef;
+  --old: #5f6b78;
+  --old-soft: #e7ebef;
+  --bezel: #1b1b1f;
+  --chrome: #e9e7ea;
+  --chrome-line: #d6d2d5;
+  --display: 'Poppins', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --body: 'Inter', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #141316; --surface: #1f1e22; --ink: #f3f1f3; --text: #cfccd2; --muted: #9a97a0; --line: #34313a;
+    --accent: #ff4d84; --accent-ink: #1a0610; --accent-soft: #3a1a26; --old: #a9b5c2; --old-soft: #262b31; --bezel: #000000;
+    --chrome: #2a282e; --chrome-line: #3a3740;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #141316; --surface: #1f1e22; --ink: #f3f1f3; --text: #cfccd2; --muted: #9a97a0; --line: #34313a;
+  --accent: #ff4d84; --accent-ink: #1a0610; --accent-soft: #3a1a26; --old: #a9b5c2; --old-soft: #262b31; --bezel: #000000;
+  --chrome: #2a282e; --chrome-line: #3a3740;
+  color-scheme: dark;
+}
+
+body { background: var(--page); color: var(--text); font-family: var(--body); font-size: 15px; line-height: 1.55; margin: 0; }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 20px 28px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 20px; }
+body.computer .wrap { max-width: 1330px; }
+
+.bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.label { font-family: var(--display); font-size: 13px; font-weight: 500; color: var(--muted); margin-right: 2px; }
+button.ctl { font: 500 14px var(--display); color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+button.ctl:hover { border-color: var(--accent); color: var(--accent); }
+button.ctl.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+button.ctl.primary:hover { filter: brightness(0.95); color: var(--accent-ink); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 3px; gap: 3px; }
+.seg button { font: 500 14px var(--display); border: 0; border-radius: 7px; padding: 6px 14px; background: transparent; color: var(--muted); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.which { display: none; }
+
+.stage { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; justify-items: center; }
+.stage[hidden] { display: none !important; }
+.device { display: grid; gap: 10px; justify-items: center; width: 100%; max-width: 405px; min-width: 0; }
+.device-head { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-size: 14px; font-weight: 500; color: var(--ink); }
+.tag { padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: 0.03em; }
+.tag.old { background: var(--old-soft); color: var(--old); }
+.tag.new { background: var(--accent-soft); color: var(--accent); }
+.phone { width: 100%; max-width: 405px; background: var(--bezel); border-radius: 38px; padding: 14px; box-shadow: 0 18px 40px rgba(0,0,0,0.18); }
+.screen { position: relative; width: 100%; max-width: 100%; border-radius: 26px; overflow: hidden; background: #fff; }
+.screen.phone-screen { aspect-ratio: 375 / 760; }
+.screen iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; background: #fff; }
+
+/* Computer view: browser windows one above the other, at up to real size so the text is readable. */
+.desk { grid-template-columns: 1fr; gap: 32px; justify-items: center; }
+.window { display: grid; gap: 10px; min-width: 0; width: 100%; max-width: 1282px; }
+.window .device-head { justify-content: flex-start; }
+.browser { border-radius: 12px; overflow: hidden; border: 1px solid var(--chrome-line); background: var(--chrome); box-shadow: 0 14px 36px rgba(0,0,0,0.14); }
+.browser-top { display: flex; align-items: center; gap: 12px; padding: 9px 14px; border-bottom: 1px solid var(--chrome-line); }
+.dots { display: flex; gap: 6px; }
+.dots span { width: 11px; height: 11px; border-radius: 50%; background: var(--chrome-line); }
+.address { flex: 1; min-width: 0; font: 13px var(--body); color: var(--muted); background: var(--surface); border-radius: 7px; padding: 4px 12px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.screen.browser-screen { border-radius: 0; aspect-ratio: 1280 / 800; }
+
+@media (max-width: 760px) {
+  .which { display: inline-flex; }
+  .stage { grid-template-columns: 1fr; }
+  .device[hidden], .window[hidden] { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Show as">
+      <button type="button" id="view-phone" aria-pressed="true">Phone</button>
+      <button type="button" id="view-computer" aria-pressed="false">Computer</button>
+    </div>
+    <div class="group" role="group" aria-label="Demo controls">
+      <button class="ctl primary" id="restart" type="button">Start again</button>
+      <button class="ctl" id="refresh" type="button">Refresh both</button>
+      <button class="ctl" id="expired" type="button">Link already used</button>
+    </div>
+    <div class="seg which" role="group" aria-label="Which version to show">
+      <button type="button" id="show-before" aria-pressed="true">Today</button>
+      <button type="button" id="show-after" aria-pressed="false">Proposed</button>
+    </div>
+  </div>
+
+  <script>
+    // Every visit starts with an unused link (each screen remembers an opened link only within a visit).
+    try { ["before-phone", "after-phone", "before-computer", "after-computer"].forEach(function (n) {
+      sessionStorage.removeItem("c2c-demo-opened-" + n); }); } catch (e) {}
+  </script>
+
+  <div class="stage" id="stage-phone">
+    <section class="device" data-version="before" aria-label="Today's live version on a phone">
+      <div class="device-head"><span class="tag old">Today</span> Live version</div>
+      <div class="phone"><div class="screen phone-screen"><iframe name="before-phone" data-w="375" data-h="760" title="Today's customer screens on a phone" src="before/index.html#credit"></iframe></div></div>
+    </section>
+    <section class="device" data-version="after" aria-label="Proposed version on a phone">
+      <div class="device-head"><span class="tag new">Proposed</span> The update</div>
+      <div class="phone"><div class="screen phone-screen"><iframe name="after-phone" data-w="375" data-h="760" title="Proposed customer screens on a phone" src="after/index.html#credit"></iframe></div></div>
+    </section>
+  </div>
+
+  <div class="stage desk" id="stage-computer" hidden>
+    <section class="window" data-version="before" aria-label="Today's live version on a computer">
+      <div class="device-head"><span class="tag old">Today</span> Live version</div>
+      <div class="browser">
+        <div class="browser-top"><div class="dots"><span></span><span></span><span></span></div><div class="address">c2c-front.click2check.com</div></div>
+        <div class="screen browser-screen"><iframe name="before-computer" data-w="1280" data-h="800" title="Today's customer screens on a computer"></iframe></div>
+      </div>
+    </section>
+    <section class="window" data-version="after" aria-label="Proposed version on a computer">
+      <div class="device-head"><span class="tag new">Proposed</span> The update</div>
+      <div class="browser">
+        <div class="browser-top"><div class="dots"><span></span><span></span><span></span></div><div class="address">c2c-front.click2check.com</div></div>
+        <div class="screen browser-screen"><iframe name="after-computer" data-w="1280" data-h="800" title="Proposed customer screens on a computer"></iframe></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function () {
+  var view = "phone";
+  var stages = { phone: document.getElementById("stage-phone"), computer: document.getElementById("stage-computer") };
+  function frames(v) { return Array.prototype.slice.call(stages[v || view].querySelectorAll("iframe")); }
+  function src(f, hash) { return f.name.split("-")[0] + "/index.html#" + hash; }
+
+  // Each screen is drawn at its real size (375 wide for a phone, 1280 for a computer) and scaled to fit.
+  function fit() {
+    frames("phone").concat(frames("computer")).forEach(function (f) {
+      var w = +f.getAttribute("data-w"), h = +f.getAttribute("data-h");
+      f.style.width = w + "px"; f.style.height = h + "px";
+      var scale = f.parentElement.clientWidth / w;
+      if (scale > 0) f.style.transform = "scale(" + scale + ")";
+    });
+  }
+  window.addEventListener("resize", fit);
+  if (window.ResizeObserver) {
+    var ro = new ResizeObserver(fit);
+    ro.observe(stages.phone); ro.observe(stages.computer);
+  }
+
+  function load(hash, keepOpened) {
+    frames().forEach(function (f) {
+      if (!keepOpened) { try { sessionStorage.removeItem("c2c-demo-opened-" + f.name); } catch (e) {} }
+      f.src = "about:blank";   // a hash change alone wouldn't reload the screens
+      setTimeout(function () { f.src = src(f, hash); }, 60);
+    });
+  }
+  document.getElementById("restart").addEventListener("click", function () { load("credit", false); });
+  document.getElementById("expired").addEventListener("click", function () { load("used", true); });
+  document.getElementById("refresh").addEventListener("click", function () {
+    frames().forEach(function (f) {
+      try { f.contentWindow.location.reload(); } catch (e) { f.src = f.src; }
+    });
+  });
+
+  // Phone or computer.
+  var viewBtns = { phone: document.getElementById("view-phone"), computer: document.getElementById("view-computer") };
+  function setView(v) {
+    view = v;
+    Object.keys(stages).forEach(function (k) {
+      stages[k].hidden = k !== v;
+      viewBtns[k].setAttribute("aria-pressed", String(k === v));
+    });
+    document.body.classList.toggle("computer", v === "computer");
+    frames().forEach(function (f) { if (!f.getAttribute("src")) f.src = src(f, "credit"); });  // first time shown
+    apply();
+  }
+  Object.keys(viewBtns).forEach(function (k) { viewBtns[k].addEventListener("click", function () { setView(k); }); });
+
+  // On a narrow screen, one version at a time.
+  var btns = { before: document.getElementById("show-before"), after: document.getElementById("show-after") };
+  var narrow = window.matchMedia("(max-width: 760px)");
+  var showing = "before";
+  function apply() {
+    Array.prototype.slice.call(document.querySelectorAll("[data-version]")).forEach(function (el) {
+      el.hidden = narrow.matches && el.getAttribute("data-version") !== showing;
+    });
+    Object.keys(btns).forEach(function (k) { btns[k].setAttribute("aria-pressed", String(k === showing)); });
+    fit();
+  }
+  Object.keys(btns).forEach(function (k) { btns[k].addEventListener("click", function () { showing = k; apply(); }); });
+  if (narrow.addEventListener) narrow.addEventListener("change", apply); else narrow.addListener(apply);
+  apply();
+})();
+</script>
+
+</body>
+</html>
